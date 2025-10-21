@@ -1,4 +1,4 @@
--- Roblox Advanced Menu Script for Delta Executor
+    -- Roblox Advanced Menu Script for Delta Executor
 -- Features: TP, Fly, Kill, Kill Aura, No Clip, Speed Hack, Jump Boost, Godmode, and more
 
 if not game then warn("Script must be run in Roblox environment.") return end
@@ -154,7 +154,7 @@ CloseButton.MouseButton1Click:Connect(function()
 end)
 
 -- Utility Functions
-local function CreateButton(text, callback, tab)
+local function CreateButton(text, callback)
     local Button = Instance.new("TextButton")
     Button.Size = UDim2.new(1, -10, 0, 45)
     Button.BackgroundColor3 = Color3.fromRGB(128, 0, 128)
@@ -162,7 +162,7 @@ local function CreateButton(text, callback, tab)
     Button.TextColor3 = Color3.fromRGB(255, 255, 255)
     Button.Font = Enum.Font.SourceSansBold
     Button.TextSize = 18
-    Button.Parent = ContentFrames[tab]
+    Button.Parent = ScrollingFrame
     Button.MouseButton1Click:Connect(callback)
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 10)
@@ -177,11 +177,11 @@ local function CreateButton(text, callback, tab)
     return Button
 end
 
-local function CreateToggle(text, callback, tab)
+local function CreateToggle(text, callback)
     local ToggleFrame = Instance.new("Frame")
     ToggleFrame.Size = UDim2.new(1, -10, 0, 45)
     ToggleFrame.BackgroundTransparency = 1
-    ToggleFrame.Parent = ContentFrames[tab]
+    ToggleFrame.Parent = ScrollingFrame
 
     local ToggleButton = Instance.new("TextButton")
     ToggleButton.Size = UDim2.new(0.8, 0, 1, 0)
@@ -212,11 +212,11 @@ local function CreateToggle(text, callback, tab)
     end)
 end
 
-local function CreateSlider(text, min, max, default, callback, tab)
+local function CreateSlider(text, min, max, default, callback)
     local SliderFrame = Instance.new("Frame")
     SliderFrame.Size = UDim2.new(1, -10, 0, 65)
     SliderFrame.BackgroundTransparency = 1
-    SliderFrame.Parent = ContentFrames[tab]
+    SliderFrame.Parent = ScrollingFrame
 
     local Label = Instance.new("TextLabel")
     Label.Size = UDim2.new(1, 0, 0, 25)
@@ -436,16 +436,16 @@ local function ToggleKillAura(enabled)
 end
 
 -- Buttons and Toggles
-CreateToggle("Fly", ToggleFlyYen, "Movement")
-CreateSlider("Fly Speed", 10, 200, 50, function(value) FlySpeed = value end, "Movement")
+CreateToggle("Fly", ToggleFlyYen)
+CreateSlider("Fly Speed", 10, 200, 50, function(value) FlySpeed = value end)
 
-CreateToggle("No Clip", ToggleNoClip, "Movement")
+CreateToggle("No Clip", ToggleNoClip)
 
-CreateToggle("Speed Hack", ToggleSpeed, "Movement")
-CreateSlider("Speed", 16, 200, 16, function(value) SpeedValue = value; if SpeedEnabled then Humanoid.WalkSpeed = value end end, "Movement")
+CreateToggle("Speed Hack", ToggleSpeed)
+CreateSlider("Speed", 16, 200, 16, function(value) SpeedValue = value; if SpeedEnabled then Humanoid.WalkSpeed = value end end)
 
-CreateToggle("Jump Boost", ToggleJump, "Movement")
-CreateSlider("Jump Power", 50, 500, 50, function(value) JumpValue = value; if JumpEnabled then Humanoid.JumpPower = value end end, "Movement")
+CreateToggle("Jump Boost", ToggleJump)
+CreateSlider("Jump Power", 50, 500, 50, function(value) JumpValue = value; if JumpEnabled then Humanoid.JumpPower = value end end)
 
 CreateToggle("Infinite Jump", function(enabled)
     if enabled then
@@ -453,12 +453,12 @@ CreateToggle("Infinite Jump", function(enabled)
             if Humanoid then Humanoid:ChangeState(Enum.HumanoidStateType.Jumping) end
         end)
     end
-end, "Movement")
+end)
 
-CreateToggle("Godmode", ToggleGodmode, "Combat")
+CreateToggle("Godmode", ToggleGodmode)
 
-CreateToggle("Kill Aura", ToggleKillAura, "Combat")
-CreateSlider("Kill Aura Range", 5, 50, 10, function(value) KillAuraRange = value end, "Combat")
+CreateToggle("Kill Aura", ToggleKillAura)
+CreateSlider("Kill Aura Range", 5, 50, 10, function(value) KillAuraRange = value end)
 
 CreateButton("Kill Player", function()
     local target = Players:GetPlayers()[math.random(1, #Players:GetPlayers())] -- Random for demo
@@ -481,7 +481,7 @@ CreateButton("Kill Player", function()
             firetouchinterest(tool.Handle, target.Character.HumanoidRootPart, 1)
         end
     end
-end, "Combat")
+end)
 
 CreateToggle("ESP", function(enabled)
     if enabled then
@@ -584,7 +584,7 @@ CreateToggle("ESP", function(enabled)
             end
         end
     end
-end, "Visuals")
+end)
 
 CreateToggle("Aimbot", function(enabled)
     if enabled then
@@ -607,14 +607,14 @@ CreateToggle("Aimbot", function(enabled)
         end)
         -- Store connection to disconnect later if needed
     end
-end, "Visuals")
+end)
 
 CreateButton("Teleport to Player", function()
     local target = Players:GetPlayers()[math.random(1, #Players:GetPlayers())] -- Random for demo, replace with input
     if target and target.Character and RootPart then
         RootPart.CFrame = target.Character.HumanoidRootPart.CFrame
     end
-end, "Misc")
+end)
 
 CreateButton("Anti-Kick", function()
     local mt = getrawmetatable(game)
@@ -628,7 +628,7 @@ CreateButton("Anti-Kick", function()
         return old(self, ...)
     end
     setreadonly(mt, true)
-end, "Misc")
+end)
 
 -- Draggable Menu
 local dragging = false
