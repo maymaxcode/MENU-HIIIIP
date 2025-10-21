@@ -58,147 +58,91 @@ tween:Play()
 wait(2)
 LoadingGui:Destroy()
 
--- GUI Setup with Tabs and Animations
+-- GUI Setup with Rectangular Design and Dark Purple Theme
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "AdvancedMenu"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = game:GetService("CoreGui")
 
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 400, 0, 550)
-MainFrame.Position = UDim2.new(0.5, -200, 0.5, -275)
-MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-MainFrame.BorderSizePixel = 0
+MainFrame.Size = UDim2.new(0, 350, 0, 500)
+MainFrame.Position = UDim2.new(0.5, -175, 0.5, -250)
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 0, 40) -- Dark purple
+MainFrame.BorderSizePixel = 2
+MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 MainFrame.BackgroundTransparency = 1 -- Start transparent for fade in
 MainFrame.Parent = ScreenGui
 
 local UIGradientMain = Instance.new("UIGradient")
 UIGradientMain.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(128, 0, 128)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(40, 0, 80)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
 }
 UIGradientMain.Parent = MainFrame
 
-local UICornerMain = Instance.new("UICorner")
-UICornerMain.CornerRadius = UDim.new(0, 20)
-UICornerMain.Parent = MainFrame
-
 -- Fade in animation
-TweenService:Create(MainFrame, TweenInfo.new(0.5), {BackgroundTransparency = 0}):Play()
+TweenService:Create(MainFrame, TweenInfo.new(0.8), {BackgroundTransparency = 0}):Play()
 
 local TitleBar = Instance.new("Frame")
-TitleBar.Size = UDim2.new(1, 0, 0, 60)
-TitleBar.BackgroundColor3 = Color3.fromRGB(128, 0, 128)
+TitleBar.Size = UDim2.new(1, 0, 0, 50)
+TitleBar.BackgroundColor3 = Color3.fromRGB(30, 0, 60)
+TitleBar.BorderSizePixel = 0
 TitleBar.Parent = MainFrame
-
-local UICornerTitle = Instance.new("UICorner")
-UICornerTitle.CornerRadius = UDim.new(0, 20)
-UICornerTitle.Parent = TitleBar
 
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(0.7, 0, 1, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "💜 Advanced Menu 💜"
+Title.Text = "Advanced Menu"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.Font = Enum.Font.SourceSansBold
-Title.TextSize = 24
+Title.TextSize = 22
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Parent = TitleBar
 
 local MinimizeButton = Instance.new("TextButton")
-MinimizeButton.Size = UDim2.new(0, 40, 0, 40)
-MinimizeButton.Position = UDim2.new(0.75, 0, 0.5, -20)
-MinimizeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeButton.Size = UDim2.new(0, 35, 0, 35)
+MinimizeButton.Position = UDim2.new(0.75, 0, 0.5, -17.5)
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(50, 0, 100)
 MinimizeButton.Text = "−"
-MinimizeButton.TextColor3 = Color3.fromRGB(128, 0, 128)
+MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 MinimizeButton.Font = Enum.Font.SourceSansBold
-MinimizeButton.TextSize = 30
+MinimizeButton.TextSize = 28
 MinimizeButton.Parent = TitleBar
 
-local UICornerMin = Instance.new("UICorner")
-UICornerMin.CornerRadius = UDim.new(0, 10)
-UICornerMin.Parent = MinimizeButton
-
 local CloseButton = Instance.new("TextButton")
-CloseButton.Size = UDim2.new(0, 40, 0, 40)
-CloseButton.Position = UDim2.new(0.9, 0, 0.5, -20)
-CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+CloseButton.Size = UDim2.new(0, 35, 0, 35)
+CloseButton.Position = UDim2.new(0.9, 0, 0.5, -17.5)
+CloseButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
 CloseButton.Text = "✕"
 CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseButton.Font = Enum.Font.SourceSansBold
-CloseButton.TextSize = 22
+CloseButton.TextSize = 20
 CloseButton.Parent = TitleBar
 
-local UICornerClose = Instance.new("UICorner")
-UICornerClose.CornerRadius = UDim.new(0, 10)
-UICornerClose.Parent = CloseButton
+local ScrollingFrame = Instance.new("ScrollingFrame")
+ScrollingFrame.Size = UDim2.new(1, -20, 1, -70)
+ScrollingFrame.Position = UDim2.new(0, 10, 0, 60)
+ScrollingFrame.BackgroundTransparency = 1
+ScrollingFrame.ScrollBarThickness = 6
+ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(100, 0, 200)
+ScrollingFrame.Parent = MainFrame
 
--- Tabs
-local TabFrame = Instance.new("Frame")
-TabFrame.Size = UDim2.new(1, 0, 0, 50)
-TabFrame.Position = UDim2.new(0, 0, 0, 60)
-TabFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-TabFrame.Parent = MainFrame
-
-local TabLayout = Instance.new("UIListLayout")
-TabLayout.FillDirection = Enum.FillDirection.Horizontal
-TabLayout.Parent = TabFrame
-
-local Tabs = {"Movement", "Combat", "Visuals", "Misc"}
-local CurrentTab = "Movement"
-local TabButtons = {}
-local ContentFrames = {}
-
-for _, tabName in pairs(Tabs) do
-    local TabButton = Instance.new("TextButton")
-    TabButton.Size = UDim2.new(0.25, 0, 1, 0)
-    TabButton.BackgroundColor3 = tabName == CurrentTab and Color3.fromRGB(128, 0, 128) or Color3.fromRGB(255, 255, 255)
-    TabButton.Text = tabName
-    TabButton.TextColor3 = tabName == CurrentTab and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(128, 0, 128)
-    TabButton.Font = Enum.Font.SourceSansBold
-    TabButton.TextSize = 18
-    TabButton.Parent = TabFrame
-    TabButtons[tabName] = TabButton
-
-    TabButton.MouseButton1Click:Connect(function()
-        CurrentTab = tabName
-        for name, btn in pairs(TabButtons) do
-            btn.BackgroundColor3 = name == CurrentTab and Color3.fromRGB(128, 0, 128) or Color3.fromRGB(255, 255, 255)
-            btn.TextColor3 = name == CurrentTab and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(128, 0, 128)
-        end
-        for name, frame in pairs(ContentFrames) do
-            frame.Visible = name == CurrentTab
-        end
-    end)
-
-    local ContentFrame = Instance.new("ScrollingFrame")
-    ContentFrame.Size = UDim2.new(1, -20, 1, -160)
-    ContentFrame.Position = UDim2.new(0, 10, 0, 110)
-    ContentFrame.BackgroundTransparency = 1
-    ContentFrame.ScrollBarThickness = 6
-    ContentFrame.ScrollBarImageColor3 = Color3.fromRGB(128, 0, 128)
-    ContentFrame.Visible = tabName == CurrentTab
-    ContentFrame.Parent = MainFrame
-
-    local UIListLayout = Instance.new("UIListLayout")
-    UIListLayout.Parent = ContentFrame
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 10)
-
-    ContentFrames[tabName] = ContentFrame
-end
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Parent = ScrollingFrame
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 8)
 
 -- Minimize and Close Functions
 local Minimized = false
 MinimizeButton.MouseButton1Click:Connect(function()
     Minimized = not Minimized
     if Minimized then
-        for _, frame in pairs(ContentFrames) do frame.Visible = false end
-        MainFrame.Size = UDim2.new(0, 400, 0, 60)
+        ScrollingFrame.Visible = false
+        MainFrame.Size = UDim2.new(0, 350, 0, 50)
         MinimizeButton.Text = "+"
     else
-        ContentFrames[CurrentTab].Visible = true
-        MainFrame.Size = UDim2.new(0, 400, 0, 550)
+        ScrollingFrame.Visible = true
+        MainFrame.Size = UDim2.new(0, 350, 0, 500)
         MinimizeButton.Text = "−"
     end
 end)
@@ -412,40 +356,82 @@ end
 
 local KillAuraEnabled = false
 local KillAuraRange = 10
-local KillAuraConnection
 
 local function ToggleKillAura(enabled)
     KillAuraEnabled = enabled
     if enabled then
-        KillAuraConnection = RunService.RenderStepped:Connect(function()
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= LocalPlayer and player.Character then
-                    local distance = (player.Character.HumanoidRootPart.Position - RootPart.Position).Magnitude
-                    if distance <= KillAuraRange then
-                        -- Multiple kill methods
-                        local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-                        if humanoid then
-                            humanoid.Health = 0
+        for _, player in pairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer then
+                local L_7_ = coroutine.create(function()
+                    RunService.RenderStepped:Connect(function()
+                        local L_8_, L_9_ = pcall(function()
+                            local L_10_ = player.Character
+                            if L_10_ and L_10_:FindFirstChild("HumanoidRootPart") then
+                                local distance = (L_10_.HumanoidRootPart.Position - RootPart.Position).Magnitude
+                                if distance <= KillAuraRange then
+                                    -- Bring player close, clear tools, and damage with local player's tool
+                                    player.Backpack:ClearAllChildren()
+                                    for L_11_forvar1, L_12_forvar2 in pairs(L_10_:GetChildren()) do
+                                        if L_12_forvar2:IsA("Tool") then
+                                            L_12_forvar2:Destroy()
+                                        end
+                                    end
+                                    L_10_.HumanoidRootPart.CFrame = CFrame.new(RootPart.Position - Vector3.new(5, 0, 0))
+                                    -- Use local player's tool to damage
+                                    local tool = LocalPlayer.Backpack:FindFirstChildOfClass("Tool") or Character:FindFirstChildOfClass("Tool")
+                                    if tool then
+                                        tool:Activate()
+                                        wait(0.1)
+                                        firetouchinterest(tool.Handle, L_10_.HumanoidRootPart, 0)
+                                        firetouchinterest(tool.Handle, L_10_.HumanoidRootPart, 1)
+                                    end
+                                end
+                            end
+                        end)
+                        if not L_8_ then
+                            warn("Kill Aura error: " .. L_9_)
                         end
-                        -- Alternative: FireServer if available
-                        local args = {player.Character}
-                        if game.ReplicatedStorage:FindFirstChild("DamageEvent") then
-                            game.ReplicatedStorage.DamageEvent:FireServer(unpack(args))
+                    end)
+                end)
+                coroutine.resume(L_7_)
+            end
+        end
+        Players.PlayerAdded:Connect(function(player)
+            if player ~= LocalPlayer then
+                local L_14_ = coroutine.create(function()
+                    RunService.RenderStepped:Connect(function()
+                        local L_15_, L_16_ = pcall(function()
+                            local L_17_ = player.Character
+                            if L_17_ and L_17_:FindFirstChild("HumanoidRootPart") then
+                                local distance = (L_17_.HumanoidRootPart.Position - RootPart.Position).Magnitude
+                                if distance <= KillAuraRange then
+                                    -- Bring player close, clear tools, and damage with local player's tool
+                                    player.Backpack:ClearAllChildren()
+                                    for L_18_forvar1, L_19_forvar2 in pairs(L_17_:GetChildren()) do
+                                        if L_19_forvar2:IsA("Tool") then
+                                            L_19_forvar2:Destroy()
+                                        end
+                                    end
+                                    L_17_.HumanoidRootPart.CFrame = CFrame.new(RootPart.Position - Vector3.new(5, 0, 0))
+                                    -- Use local player's tool to damage
+                                    local tool = LocalPlayer.Backpack:FindFirstChildOfClass("Tool") or Character:FindFirstChildOfClass("Tool")
+                                    if tool then
+                                        tool:Activate()
+                                        wait(0.1)
+                                        firetouchinterest(tool.Handle, L_17_.HumanoidRootPart, 0)
+                                        firetouchinterest(tool.Handle, L_17_.HumanoidRootPart, 1)
+                                    end
+                                end
+                            end
+                        end)
+                        if not L_15_ then
+                            warn("Kill Aura error: " .. L_16_)
                         end
-                        -- Touch interest as fallback
-                        local tool = LocalPlayer.Backpack:FindFirstChildOfClass("Tool") or Character:FindFirstChildOfClass("Tool")
-                        if tool then
-                            tool:Activate()
-                            wait(0.1)
-                            firetouchinterest(tool.Handle, player.Character.HumanoidRootPart, 0)
-                            firetouchinterest(tool.Handle, player.Character.HumanoidRootPart, 1)
-                        end
-                    end
-                end
+                    end)
+                end)
+                coroutine.resume(L_14_)
             end
         end)
-    else
-        if KillAuraConnection then KillAuraConnection:Disconnect() end
     end
 end
 
@@ -477,9 +463,20 @@ CreateSlider("Kill Aura Range", 5, 50, 10, function(value) KillAuraRange = value
 CreateButton("Kill Player", function()
     local target = Players:GetPlayers()[math.random(1, #Players:GetPlayers())] -- Random for demo
     if target and target.Character then
+        local humanoid = target.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.Health = 0
+        end
+        -- Alternative: FireServer if available
+        local args = {target.Character}
+        if game.ReplicatedStorage:FindFirstChild("DamageEvent") then
+            game.ReplicatedStorage.DamageEvent:FireServer(unpack(args))
+        end
+        -- Touch interest as fallback
         local tool = LocalPlayer.Backpack:FindFirstChildOfClass("Tool") or Character:FindFirstChildOfClass("Tool")
         if tool then
             tool:Activate()
+            wait(0.1)
             firetouchinterest(tool.Handle, target.Character.HumanoidRootPart, 0)
             firetouchinterest(tool.Handle, target.Character.HumanoidRootPart, 1)
         end
@@ -490,41 +487,100 @@ CreateToggle("ESP", function(enabled)
     if enabled then
         for _, player in pairs(Players:GetPlayers()) do
             if player ~= LocalPlayer and player.Character then
-                local esp = Instance.new("BillboardGui")
-                esp.Size = UDim2.new(0, 100, 0, 50)
-                esp.StudsOffset = Vector3.new(0, 2, 0)
-                esp.Adornee = player.Character.Head
-                esp.Parent = player.Character.Head
-                local label = Instance.new("TextLabel")
-                label.Size = UDim2.new(1, 0, 1, 0)
-                label.BackgroundTransparency = 1
-                label.Text = player.Name
-                label.TextColor3 = Color3.fromRGB(255, 0, 0)
-                label.Font = Enum.Font.SourceSansBold
-                label.TextSize = 14
-                label.Parent = esp
+                local box = Instance.new("BoxHandleAdornment")
+                box.Size = player.Character:GetExtentsSize()
+                box.Adornee = player.Character
+                box.AlwaysOnTop = true
+                box.ZIndex = 5
+                box.Color3 = Color3.fromRGB(255, 0, 0)
+                box.Transparency = 0.5
+                box.Parent = player.Character
+
+                local healthBar = Instance.new("BillboardGui")
+                healthBar.Size = UDim2.new(0, 100, 0, 20)
+                healthBar.StudsOffset = Vector3.new(0, 3, 0)
+                healthBar.Adornee = player.Character.Head
+                healthBar.Parent = player.Character.Head
+
+                local healthFrame = Instance.new("Frame")
+                healthFrame.Size = UDim2.new(1, 0, 1, 0)
+                healthFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+                healthFrame.Parent = healthBar
+
+                local healthFill = Instance.new("Frame")
+                healthFill.Size = UDim2.new(1, 0, 1, 0)
+                healthFill.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+                healthFill.Parent = healthFrame
+
+                local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    healthFill.Size = UDim2.new(humanoid.Health / humanoid.MaxHealth, 0, 1, 0)
+                end
+
+                local distanceLabel = Instance.new("TextLabel")
+                distanceLabel.Size = UDim2.new(1, 0, 0, 20)
+                distanceLabel.Position = UDim2.new(0, 0, 1, 0)
+                distanceLabel.BackgroundTransparency = 1
+                distanceLabel.Text = "Distance: " .. math.floor((player.Character.HumanoidRootPart.Position - RootPart.Position).Magnitude)
+                distanceLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+                distanceLabel.Font = Enum.Font.SourceSansBold
+                distanceLabel.TextSize = 12
+                distanceLabel.Parent = healthBar
             end
         end
         Players.PlayerAdded:Connect(function(player)
             player.CharacterAdded:Wait()
-            local esp = Instance.new("BillboardGui")
-            esp.Size = UDim2.new(0, 100, 0, 50)
-            esp.StudsOffset = Vector3.new(0, 2, 0)
-            esp.Adornee = player.Character.Head
-            esp.Parent = player.Character.Head
-            local label = Instance.new("TextLabel")
-            label.Size = UDim2.new(1, 0, 1, 0)
-            label.BackgroundTransparency = 1
-            label.Text = player.Name
-            label.TextColor3 = Color3.fromRGB(255, 0, 0)
-            label.Font = Enum.Font.SourceSansBold
-            label.TextSize = 14
-            label.Parent = esp
+            local box = Instance.new("BoxHandleAdornment")
+            box.Size = player.Character:GetExtentsSize()
+            box.Adornee = player.Character
+            box.AlwaysOnTop = true
+            box.ZIndex = 5
+            box.Color3 = Color3.fromRGB(255, 0, 0)
+            box.Transparency = 0.5
+            box.Parent = player.Character
+
+            local healthBar = Instance.new("BillboardGui")
+            healthBar.Size = UDim2.new(0, 100, 0, 20)
+            healthBar.StudsOffset = Vector3.new(0, 3, 0)
+            healthBar.Adornee = player.Character.Head
+            healthBar.Parent = player.Character.Head
+
+            local healthFrame = Instance.new("Frame")
+            healthFrame.Size = UDim2.new(1, 0, 1, 0)
+            healthFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+            healthFrame.Parent = healthBar
+
+            local healthFill = Instance.new("Frame")
+            healthFill.Size = UDim2.new(1, 0, 1, 0)
+            healthFill.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+            healthFill.Parent = healthFrame
+
+            local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                healthFill.Size = UDim2.new(humanoid.Health / humanoid.MaxHealth, 0, 1, 0)
+            end
+
+            local distanceLabel = Instance.new("TextLabel")
+            distanceLabel.Size = UDim2.new(1, 0, 0, 20)
+            distanceLabel.Position = UDim2.new(0, 0, 1, 0)
+            distanceLabel.BackgroundTransparency = 1
+            distanceLabel.Text = "Distance: " .. math.floor((player.Character.HumanoidRootPart.Position - RootPart.Position).Magnitude)
+            distanceLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            distanceLabel.Font = Enum.Font.SourceSansBold
+            distanceLabel.TextSize = 12
+            distanceLabel.Parent = healthBar
         end)
     else
         for _, player in pairs(Players:GetPlayers()) do
-            if player.Character and player.Character.Head:FindFirstChild("BillboardGui") then
-                player.Character.Head.BillboardGui:Destroy()
+            if player.Character then
+                for _, child in pairs(player.Character:GetChildren()) do
+                    if child:IsA("BoxHandleAdornment") or child:IsA("BillboardGui") then
+                        child:Destroy()
+                    end
+                end
+                if player.Character.Head:FindFirstChild("BillboardGui") then
+                    player.Character.Head.BillboardGui:Destroy()
+                end
             end
         end
     end
